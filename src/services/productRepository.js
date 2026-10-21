@@ -6,11 +6,13 @@ export function getProducts() {
   const savedProducts = localStorage.getItem(STORAGE_KEY)
   if (savedProducts === null) return initialProducts
 
-  const products = JSON.parse(savedProducts)
-  if (!Array.isArray(products)) {
-    throw new Error('Los productos guardados tienen un formato inválido.')
+  try {
+    const products = JSON.parse(savedProducts)
+    if (!Array.isArray(products)) return initialProducts
+    return products
+  } catch {
+    return initialProducts
   }
-  return products
 }
 
 function saveProducts(products) {
@@ -19,7 +21,12 @@ function saveProducts(products) {
 
 export function createProduct(product) {
   const products = getProducts()
-  const newProduct = { ...product, id: crypto.randomUUID() }
+  const newProduct = {
+    ...product,
+    id: product.id || `HAB${Date.now().toString().slice(-3)}`,
+    roomStatus: product.roomStatus || 'Disponible',
+    capacity: product.capacity || '2 personas',
+  }
   saveProducts([...products, newProduct])
   return newProduct
 }
@@ -34,6 +41,10 @@ export function updateProduct(id, changes) {
   )
   saveProducts(updatedProducts)
   return updatedProducts.find((product) => product.id === id)
+}
+
+export function updateRoomStatus(id, roomStatus) {
+  return updateProduct(id, { roomStatus })
 }
 
 export function deleteProduct(id) {

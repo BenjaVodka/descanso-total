@@ -2,9 +2,8 @@ import { useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ProductCard } from '../components/ProductCard.jsx'
 import { useStore } from '../context/useStore.js'
+import { categories } from '../data/products.js'
 import { formatPrice } from '../utils/formatPrice.js'
-
-const categories = ['Colchones', 'Almohadas', 'Ropa de cama', 'Camas']
 
 function ProductGrid({ products, emptyMessage = 'No encontramos productos para mostrar.' }) {
   if (products.length === 0) return <p className="empty-state">{emptyMessage}</p>
