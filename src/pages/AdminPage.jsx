@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { categories } from '../data/products.js'
 import { useStore } from '../context/useStore.js'
 import { formatPrice } from '../utils/formatPrice.js'
 
 const emptyForm = {
   name: '',
-  category: 'Colchones',
+  category: categories[0],
   price: '',
   offerPrice: '',
   stock: '',
@@ -105,7 +106,9 @@ export function AdminPage() {
           <input className="form-control" id="product-name" name="name" value={form.name} onChange={updateField} required />
           <label className="form-label" htmlFor="product-category">Categoría</label>
           <select className="form-select" id="product-category" name="category" value={form.category} onChange={updateField}>
-            <option>Colchones</option><option>Almohadas</option><option>Ropa de cama</option><option>Camas</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
           </select>
           <div className="row g-3">
             <div className="col-6">

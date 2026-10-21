@@ -12,9 +12,14 @@ const CART_STORAGE_KEY = 'descanso-total.cart'
 function getInitialCart() {
   const savedCart = localStorage.getItem(CART_STORAGE_KEY)
   if (savedCart === null) return []
-  const cart = JSON.parse(savedCart)
-  if (!Array.isArray(cart)) throw new Error('El carrito guardado tiene un formato inválido.')
-  return cart
+
+  try {
+    const cart = JSON.parse(savedCart)
+    if (!Array.isArray(cart)) return []
+    return cart
+  } catch {
+    return []
+  }
 }
 
 export function StoreProvider({ children }) {
